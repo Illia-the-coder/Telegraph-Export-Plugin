@@ -1,0 +1,54 @@
+openapi: 3.0.1
+info:
+  title: Telegraph Export
+  description: A plugin that allows the user to export text to Telegraph.
+  version: 'v1'
+servers:
+  - url: https://telegraph-export.illia56.repl.co
+paths:
+  /export:
+    post:
+      operationId: export
+      summary: Export text to Telegraph
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExportRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportResponse'
+        "404":
+          description: Invalid syntax, try one more time.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+components:
+  schemas:
+    ExportRequest:
+      type: object
+      required:
+      - title
+      - text
+      properties:
+        title:
+          type: string
+          description: The title of the Telegraph page only in english.
+        text:
+          type: string
+          description: The text only in english to export to the Telegraph page in html(allowed tags - h3-h6, a, pre, code, b, i, u).
+    ExportResponse:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The URL of the created Telegraph page.
